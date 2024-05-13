@@ -268,7 +268,7 @@ int main()
             while (1)
             {
                 printf("\nMenu:\n");
-                printf("1. Tambah Brang\n");
+                printf("1. Tambah Barang\n");
                 printf("2. Kurangi Barang\n");
                 printf("3. Lihat Daftar Barang\n");
                 printf("4. Pembayaran\n");
