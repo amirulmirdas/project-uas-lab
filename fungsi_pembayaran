@@ -1,0 +1,32 @@
+
+void pembayaran()
+{
+    if (jumlah_barang > 0)
+    {
+        float total_harga = 0;
+        for (int i = 0; i < jumlah_barang; i++)
+        {
+            total_harga += toko[i].jumlah * toko[i].harga;
+        }
+
+        printf("Total Harga: %.2f\n", total_harga);
+
+        float jumlah_uang;
+        printf("Jumlah Uang: ");
+        scanf("%f", &jumlah_uang);
+
+        if (jumlah_uang >= total_harga)
+        {
+            float kembalian = jumlah_uang - total_harga;
+            printf("Kembalian: %.2f\n", kembalian);
+        }
+        else
+        {
+            printf("Maaf, uang tidak mencukupi.\n");
+        }
+    }
+    else
+    {
+        printf("Toko kosong.\n");
+    }
+}
