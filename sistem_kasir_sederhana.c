@@ -2,31 +2,32 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_BARANG 100
-#define FILENAME "data_barang.txt"
-#define USER_FILENAME "data_user.txt"
+#define MAX_BARANG 100 // membuat batas maxsimal barang di tambahkan
+#define FILENAME "data_barang.txt" // membuat file untuk menyimpan barang  
+#define USER_FILENAME "data_user.txt" // membuat file untuk menambahkan data user 
 
-struct Barang
+struct Barang // mnggunakan struct untuk menggroping variabel dengan nama Barang
 {
     char nama[50];
     int jumlah;
     float harga;
 };
 
-struct User
+struct User // menggunakan struct untuk menggroping variabel dengan nama User
 {
     char username[50];
     char password[50];
 };
 
-struct Barang toko[MAX_BARANG];
-int jumlah_barang = 0;
+struct Barang toko[MAX_BARANG]; // menggunakan struct dengan nama variabel toko dengan syarat max_barang yaitu 100
+
+int jumlah_barang = 0; // mendeklarasikan jumlah barang dari 0
 
 void tambah_barang()
 {
-    if (jumlah_barang < MAX_BARANG)
+    if (jumlah_barang < MAX_BARANG) // membuat apabaila jumlah barang kurang 100 maka kode akan berjalan 
     {
-        struct Barang new_barang;
+        struct Barang new_barang; 
 
         printf("Nama Barang: ");
         scanf("%s", new_barang.nama);
@@ -37,16 +38,16 @@ void tambah_barang()
         printf("Harga Barang: ");
         scanf("%f", &new_barang.harga);
 
-        FILE *fp = fopen(FILENAME, "a");
-        if (fp == NULL)
+        FILE *fp = fopen(FILENAME, "a"); // menggunakan fungsi appand menambahkan data ke baris paling terakhir jika ada file yang dituju 
+        if (fp == NULL) // menggunakan null apabila file tidak ada 
         {
             printf("Gagal membuka file.\n");
             return;
         }
-        fprintf(fp, "%s %d %.2f\n", new_barang.nama, new_barang.jumlah, new_barang.harga);
+        fprintf(fp, "%s %d %.2f\n", new_barang.nama, new_barang.jumlah, new_barang.harga); //mengeprint file yang sudah di masukkan dengan fprint(file print)
         fclose(fp);
 
-        toko[jumlah_barang] = new_barang;
+        toko[jumlah_barang] = new_barang; 
         jumlah_barang++;
 
         printf("Barang berhasil ditambahkan.\n");
