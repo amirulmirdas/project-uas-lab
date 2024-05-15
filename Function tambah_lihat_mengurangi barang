@@ -1,0 +1,135 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+// Membataskan maksimum barang yg dapat di tambahkan
+#define MAX_barang 100 
+
+// Menggunakan struct untuk mengelompokkan data terkait
+struct barang{
+  char nama_barang[50];
+  int jumlah_barang;
+  float harga_barang;
+};
+
+// Menyimpan data barang yg jumlahnya banyak di array
+struct barang databarang[MAX_barang];
+int jumlahbarang = 0;
+
+// Munggunakan fungsi tambahbarang dan juga buka file.txt untuk menyimpan data input barang dalam bentuk file text
+void tambahbarang(FILE *fp){
+
+  // Menggunakan control flow if...else untuk mengeksekusi data yg telah di masukkin 
+  if(jumlahbarang < MAX_barang){  
+    struct barang tambah; //Dipanggil struct yg telah dibuat
+    printf("nama_barang : ");getchar(); //Munggunakan getchar untuk programnya menunggu data berikutnya
+    scanf("%[^\n]", tambah.nama_barang ); //scanf menyimpan data yg user telah dimasukkin
+    fprintf(fp, "nama_barang : %s\n", tambah.nama_barang); //fprintf untuk menampilkan data yg telah dimasukkin
+
+    printf("jumlah_barang : ");
+    scanf("%d", &tambah.jumlah_barang);
+    fprintf(fp,"jumlah_barang : %d\n",tambah.jumlah_barang);
+
+    printf("harga_barang : ");
+    scanf("%f", &tambah.harga_barang);
+    fprintf(fp,"jumlah_barang : %.2f\n",tambah.harga_barang);
+
+  // Ditambahkan data baru ke array dan juga mengupdate data jumlahbarang
+    databarang[jumlahbarang] = tambah;
+    jumlahbarang++;
+  }
+  else{
+    printf("MAKSIMUM BARANG\n"); //Kondisi yg tidak dapat di eksekusi dari IF maka kode dalam ELSE akan berjalan
+  }
+}; 
+
+//fungsi mengurangibarang dan juga dibuka file.txt untuk menyimpan data yg telah diinput dalam file text 
+void mengurangibarang(FILE *fp){
+  if(jumlahbarang > 0){ //eksekusi data jumlahbarang yg lebih besar dari 0
+    char kurangbarang[50]; // Array untuk menyimpan nama barang yang akan dikurangi 
+    printf("nama_barang : ");getchar(); 
+    scanf("%[^\n]", kurangbarang); 
+    fprintf(fp,"nama_barang : %s\n",kurangbarang);
+
+    int barang = 0; // Penanda apakah barang ditemukan atau tidak
+    int jumlah_kurangbarang;
+    for(int i = 0; i < jumlahbarang; i++){
+      // Jika barang ditemukan, minta input jumlah barang yang akan dikurangi
+      if(strcmp(databarang[i].nama_barang, kurangbarang) == 0){
+        printf("jumlah_kurangbarang : ");getchar();
+        scanf("%d", &jumlah_kurangbarang);
+        fprintf(fp,"jumlah_barang : %d\n", jumlah_kurangbarang);
+
+      //  Kurangi jumlah barang dan tampilkan pesan berhasil
+        if(jumlah_kurangbarang <= databarang[i].jumlah_barang){
+          databarang[i].jumlah_barang -= jumlah_kurangbarang;
+          printf("Mengurangi barang selesai.\n");
+          fprintf(fp,"Mengurangi barang selesai.\n");
+        }
+        //Jika jumlah yang dikurangi lebih besar dari yang tersedia, tampilkan pesan error
+        else{
+          printf("ERROR\n");
+          fprintf(fp,"ERROR\n");
+        }
+        barang = 1; // Menandakan barang telah ditemukan dan diproses
+        break;
+      }
+    }
+    if(!barang){ 
+      // Jika barang tidak ditemukan dalam list, tampilkan pesan ini
+      printf("Tidak ada barang ini dalam list.\n");
+      fprintf(fp,"Tidak ada barang ini dalam list.\n");
+
+    }
+  }
+}
+
+// Fungsi untuk melihat daftar barang dan menyimpan data ke file
+void lihatbarang(FILE *fp){
+  printf("Total_barang\n");
+
+  for(int i = 0; i < jumlahbarang; i++){
+    printf("%s / %d / %.2f \n", databarang[i].nama_barang, databarang[i].jumlah_barang, databarang[i].harga_barang);
+    fprintf(fp,"%s / %d / %.2f \n", databarang[i].nama_barang, databarang[i].jumlah_barang, databarang[i].harga_barang);
+  }
+};
+
+int main() {
+  FILE *fp = fopen("File.txt", "w"); // Membuka file untuk ditulis
+  if(fp == NULL){
+    printf("Error buka file.\n");
+    return 1; //// Jika file gagal dibuka, keluar dari program dengan kode error
+  }
+
+  int choices = 0 ;
+
+  // Menampilkan menu pilihan
+  do{
+    printf("1.Tambahbarang\n");
+    printf("2.Lihatbahbarang\n");
+    printf("3.Mengurangibarang\n");
+    printf("4.Exit\n");
+    scanf("%d", &choices);
+    fprintf(fp, "%d\n", choices);
+
+    switch (choices){
+    case 1 :
+      tambahbarang(fp); //Memanggil fungsi tambahbarang
+      break;
+    case 2 :
+      lihatbarang(fp); //Memanggil fungsi lihatbarang
+      break;
+    case 3 :
+      mengurangibarang(fp); //Memanggil fungsi mengurangibarang
+      break;
+    case 4 : // Jika pilihan adalah 4 maka dia akan keluar dari loop ini
+      break;
+    }
+
+  }
+  while (choices != 4);
+
+  fclose(fp); //Menutup file text
+
+  return 0;
+}
